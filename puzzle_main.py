@@ -2,18 +2,16 @@ import random
 
 
 def create_random_puzzle_board():
-    # Create a puzzle(list) and then randomly place each number.
-    # if the number is one digit only we add empty space for better print results.
-    created_puzzle_board = [str(number) if len(str(number)) == 2 else ' ' + str(number) for number in range(16)]
+    # Create a random puzzle. If the number is one digit add empty space for better visualisation.
+    puzzle = [str(number) if len(str(number)) == 2 else ' ' + str(number) for number in range(16)]
 
     # Empty box symbol
-    created_puzzle_board[0] = ' □'
+    puzzle[0] = ' □'
 
     # Using random.randint for generating different board every new game
-    created_puzzle_board = [
-        [created_puzzle_board.pop(random.randint(0, len(created_puzzle_board) - 1)) for _ in range(4)] for _ in
-        range(4)]
-    return created_puzzle_board
+    puzzle = [[puzzle.pop(random.randint(0, len(puzzle) - 1)) for _ in range(4)] for _ in range(4)]
+
+    return puzzle
 
 
 def finding_empty_box(puzzle_grid_map: list):
@@ -25,6 +23,17 @@ def finding_empty_box(puzzle_grid_map: list):
                 return empty_box_row, empty_box_column
 
 
+def check_if_puzzle_is_solved(board):
+    # puzzle solving pattern
+    pattern_grid = [[' 1', ' 2', ' 3', ' 4'], [' 5', ' 6', ' 7', ' 8'], [' 9', '10', '11', '12'],
+                    ['13', '14', '15', ' □']]
+
+    if board == pattern_grid:
+        return True
+    return False
+
+
+# -----------------------------PRINTS------------------------------------------------------------
 def printing_the_board(puzzle_board: list):
     # Visual representation of the board in terminal
     print(f'\n\n\n\n╔═════╦═════╦═════╦═════╗'
@@ -52,14 +61,11 @@ def user_input_and_control():
 # Create the board and randomly place the blocks using .randint
 puzzle_grid = create_random_puzzle_board()
 
-# puzzle solving pattern
-pattern_grid = [[' 1', ' 2', ' 3', ' 4'], [' 5', ' 6', ' 7', ' 8'], [' 9', '10', '11', '12'], ['13', '14', '15', ' □']]
-
 # staring variables
-zero_row = 0
-zero_column = 0
+row = 0
+col = 0
 
-while puzzle_grid != pattern_grid:
+while True:
 
     # Printing the current stage of the game ( the board )
     printing_the_board(puzzle_grid)
@@ -68,30 +74,31 @@ while puzzle_grid != pattern_grid:
     user_input = user_input_and_control()
 
     # FINDING ZERO ( mapping ? )
-    zero_row, zero_column = finding_empty_box(puzzle_grid)
+    row, col = finding_empty_box(puzzle_grid)
 
     # UP
-    if user_input == 'W' and zero_row > 0:
-        puzzle_grid[zero_row][zero_column], puzzle_grid[zero_row - 1][zero_column] \
-            = puzzle_grid[zero_row - 1][zero_column], puzzle_grid[zero_row][zero_column]
+    if user_input == 'W' and row > 0:
+        puzzle_grid[row][col], puzzle_grid[row - 1][col] \
+            = puzzle_grid[row - 1][col], puzzle_grid[row][col]
 
-    elif user_input == 'S' and zero_row < 3:
-        puzzle_grid[zero_row][zero_column], puzzle_grid[zero_row + 1][zero_column] \
-            = puzzle_grid[zero_row + 1][zero_column], puzzle_grid[zero_row][zero_column]
+    elif user_input == 'S' and row < 3:
+        puzzle_grid[row][col], puzzle_grid[row + 1][col] \
+            = puzzle_grid[row + 1][col], puzzle_grid[row][col]
     # LEFT
-    elif user_input == 'A' and zero_column > 0:
-        puzzle_grid[zero_row][zero_column], puzzle_grid[zero_row][zero_column - 1] \
-            = puzzle_grid[zero_row][zero_column - 1], puzzle_grid[zero_row][zero_column]
+    elif user_input == 'A' and col > 0:
+        puzzle_grid[row][col], puzzle_grid[row][col - 1] \
+            = puzzle_grid[row][col - 1], puzzle_grid[row][col]
 
     # RIGHT
-    elif user_input == 'D' and zero_column < 3:
-        puzzle_grid[zero_row][zero_column], puzzle_grid[zero_row][zero_column + 1] \
-            = puzzle_grid[zero_row][zero_column + 1], puzzle_grid[zero_row][zero_column]
+    elif user_input == 'D' and col < 3:
+        puzzle_grid[row][col], puzzle_grid[row][col + 1] \
+            = puzzle_grid[row][col + 1], puzzle_grid[row][col]
         # LEFT
 
-else:
-    print("WINNERRR")
-    print(printing_the_board(puzzle_grid))
+    if check_if_puzzle_is_solved(puzzle_grid):
+        print("WINNER")
+        print(printing_the_board(puzzle_grid))
+        break
 
 # FIX - SOLVABLE OR NOR  - FORMULA
 # ADDING - SELF SOLVER
