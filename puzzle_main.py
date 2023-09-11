@@ -15,22 +15,39 @@ def create_random_puzzle_board():
 
 
 def finding_empty_box(puzzle_grid_map: list):
-    for row in range(4):
-        for column in range(4):
-            if puzzle_grid[row][column] == ' □':
-                empty_box_row = row
-                empty_box_column = column
-                return empty_box_row, empty_box_column
+    return [(r, c) for c in range(4) for r in range(4) if puzzle_grid_map[r][c] == ' □'][0]
 
 
 def check_if_puzzle_is_solved(board):
-    # puzzle solving pattern
-    pattern_grid = [[' 1', ' 2', ' 3', ' 4'], [' 5', ' 6', ' 7', ' 8'], [' 9', '10', '11', '12'],
-                    ['13', '14', '15', ' □']]
 
-    if board == pattern_grid:
+    # puzzle solving pattern
+    pattern = [[' 1', ' 2', ' 3', ' 4'], [' 5', ' 6', ' 7', ' 8'], [' 9', '10', '11', '12'], ['13', '14', '15', ' □']]
+
+    if board == pattern:
         return True
     return False
+
+
+def move_the_empty_box(board):
+    r, c = finding_empty_box(board)
+
+    # UP
+    if user_input == 'W' and r > 0:
+        board[r][c], board[r - 1][c] = board[r - 1][c], board[r][c]
+
+    # DOWN
+    elif user_input == 'S' and r < 3:
+        board[r][c], board[r + 1][c] = board[r + 1][c], board[r][c]
+
+    # LEFT
+    elif user_input == 'A' and c > 0:
+        board[r][c], board[r][c - 1] = board[r][c - 1], board[r][c]
+
+    # RIGHT
+    elif user_input == 'D' and c < 3:
+        board[r][c], board[r][c + 1] = board[r][c + 1], board[r][c]
+
+    return board
 
 
 # -----------------------------PRINTS------------------------------------------------------------
@@ -58,47 +75,22 @@ def user_input_and_control():
     return player_input.upper()
 
 
+# -----------------------------MAIN------------------------------------------------------------
+
 # Create the board and randomly place the blocks using .randint
 puzzle_grid = create_random_puzzle_board()
 
-# staring variables
-row = 0
-col = 0
-
-while True:
-
-    # Printing the current stage of the game ( the board )
+while not check_if_puzzle_is_solved(puzzle_grid):
+    # Printing the current state of the board
     printing_the_board(puzzle_grid)
 
-    # Accepting the user input and showing the control
+    # User input and control print
     user_input = user_input_and_control()
 
-    # FINDING ZERO ( mapping ? )
-    row, col = finding_empty_box(puzzle_grid)
+    # Making the move on the board
+    puzzle_grid = move_the_empty_box(puzzle_grid)
 
-    # UP
-    if user_input == 'W' and row > 0:
-        puzzle_grid[row][col], puzzle_grid[row - 1][col] \
-            = puzzle_grid[row - 1][col], puzzle_grid[row][col]
-
-    elif user_input == 'S' and row < 3:
-        puzzle_grid[row][col], puzzle_grid[row + 1][col] \
-            = puzzle_grid[row + 1][col], puzzle_grid[row][col]
-    # LEFT
-    elif user_input == 'A' and col > 0:
-        puzzle_grid[row][col], puzzle_grid[row][col - 1] \
-            = puzzle_grid[row][col - 1], puzzle_grid[row][col]
-
-    # RIGHT
-    elif user_input == 'D' and col < 3:
-        puzzle_grid[row][col], puzzle_grid[row][col + 1] \
-            = puzzle_grid[row][col + 1], puzzle_grid[row][col]
-        # LEFT
-
-    if check_if_puzzle_is_solved(puzzle_grid):
-        print("WINNER")
-        print(printing_the_board(puzzle_grid))
-        break
+print("WINNER")
 
 # FIX - SOLVABLE OR NOR  - FORMULA
 # ADDING - SELF SOLVER
