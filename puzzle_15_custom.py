@@ -128,7 +128,7 @@ def move_the_empty_box(m_left, m_right, m_up, m_down, board, size, box_symbol, c
 
     return board
 
-
+#TODO Class Board
 # Check if the puzzle is in ordered state / if is solved
 def is_puzzle_solved(board):
     flattened_board = flattened_matrix_in_list(board)
@@ -166,10 +166,12 @@ if __name__ == '__main__':
 
     while True:
 
+        #TODO Class Board
+
         # Create the puzzle board ( matrix )
         puzzle_board = create_puzzle(puzzle_size, empty_box_symbol)
 
-        # Repeat until the puzzle is solved
+        # Repeat u  ntil the puzzle is solved
         while not is_puzzle_solved(puzzle_board):
 
             # Prints for terminal Board and Control
