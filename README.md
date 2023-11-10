@@ -1,4 +1,4 @@
-<img width="30%" align="center" alt="Tic Tac Toe Photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/15-puzzle_magical.svg/330px-15-puzzle_magical.svg.png" />
+<img width="80%" align="center" alt="Tic Tac Toe Photo" src="https://raw.githubusercontent.com/Devihem/Puzzle-15-Training/master/Background%20(1).png" />
 
 ‎ ‎
 
